@@ -1,0 +1,37 @@
+name: miquido-terraform-ses-email-forwarder-lambda
+bitbucket_repo: miquido/terraform-ses-email-forwarder-lambda
+badges: []
+related: []
+description: |-
+  Lambda used to forward messages received by SES and S3 to an external mailbox
+usage: |-
+
+  Terraform:
+
+  ```hcl
+  module "ses-email-forwarder-lambda" {
+    source = "git::ssh://git@bitbucket.org/miquido/terraform-ses-email-forwarder-lambda.git?ref=master"
+
+    name                           = "main"
+    namespace                      = "project"
+    stage                          = "example"
+    ses_region                     = "eu-west-1"
+    mail_sender                    = "noreply-forwarder@example.com"
+    mail_recipient                 = "example@example.com"
+    mail_s3_bucket                 = aws_s3_bucket.example.id
+    mail_s3_bucket_prefix          = "emails/example.com/"
+    reserved_concurrent_executions = -1
+  }
+  ```
+
+  ### Developer notes
+
+  * It is recommended to set `MailSender` environment variable carefully to not create email loop in case of receving bounce message (which will be forwarded again, and again..)
+  * Highly based on: https://aws.amazon.com/blogs/messaging-and-targeting/forward-incoming-email-to-an-external-destination/
+
+include:
+  - "docs/terraform.md"
+  - "docs/targets.md"
+contributors:
+  - name: "Konrad Obal"
+    github: "k911"
