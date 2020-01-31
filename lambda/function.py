@@ -4,6 +4,7 @@ import email
 import re
 import json
 import html
+import logging
 from datetime import datetime
 from botocore.exceptions import ClientError
 from email.mime.multipart import MIMEMultipart
@@ -58,8 +59,7 @@ def create_message(file_dict):
     mailobject = email.message_from_string(eml_file)
 
     # Create a new subject line.
-    subject_original = mailobject['Subject']
-    subject = "FW: " + subject_original
+    subject = "FW: " + mailobject['Subject']
 
     to_to = mailobject.get_all('To')
     to_cc = mailobject.get_all('Cc')
@@ -93,6 +93,7 @@ def create_message(file_dict):
     msg['Subject'] = subject
     msg['From'] = mail_sender
     msg['To'] = mail_recipient
+    msg['X-Forwarder-Type'] = 'notification'
 
     message = {
         "Source": mail_sender,
@@ -127,22 +128,18 @@ def send_email(message):
 
 def forward_original_email(message):
     original_email = message['OriginalEmail']
-    new_subject = "FW: " + original_email['Subject']
+    original_subject = original_email['Subject']
     del original_email['Subject']
-    original_email['Subject'] = new_subject
     del original_email['From']
-    original_email['From'] = message['Source']
     del original_email['Return-Path']
     del original_email['DKIM-Signature']
     del original_email['Status']
+    original_email['Subject'] = "FW: " + original_subject
+    original_email['From'] = message['Source']
+    original_email['X-Forwarder-Type'] = 'original'
     message2 = message
     message2['Data'] = original_email.as_bytes()
-    return send_email(message)
-
-import logging
-import boto3
-from botocore.exceptions import ClientError
-
+    return send_email(message2)
 
 def create_presigned_url(bucket_name, object_name, expiration=3600):
     """Generate a presigned URL to share an S3 object
@@ -181,6 +178,12 @@ def lambda_handler(event, context):
     result = send_email(message)
     print(result)
 
-    # Forward the original email and print the result.
-    result2 = forward_original_email(message)
-    print(result2)
+    # Optionally forward the original email and print the result.
+    if 'Delivery Status Notification (Failure)' not in message['OriginalEmail']['Subject']:
+        result2 = forward_original_email(message)
+        print(result2)
+    else:
+        print('Cannot forward original message')
+        print(json.dumps({
+            "Subject": message['OriginalEmail']['Subject']
+        }))

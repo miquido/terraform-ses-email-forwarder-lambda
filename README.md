@@ -88,7 +88,7 @@ Available targets:
 
 ## Copyright
 
-Copyright © 2017-2019 [Miquido](https://miquido.com)
+Copyright © 2017-2020 [Miquido](https://miquido.com)
 
 
 
