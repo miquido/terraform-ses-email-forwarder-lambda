@@ -6,9 +6,7 @@
 
 Lambda used to forward messages received by SES and S3 to an external mailbox
 ---
-Terraform Module
-
-BitBucket Repository: https://bitbucket.org/miquido/terraform-ses-email-forwarder-lambda
+**Terraform Module**
 ## Usage
 
 
@@ -34,32 +32,50 @@ module "ses-email-forwarder-lambda" {
 
 * It is recommended to set `MailSender` environment variable carefully to not create email loop in case of receving bounce message (which will be forwarded again, and again..)
 * Highly based on: https://aws.amazon.com/blogs/messaging-and-targeting/forward-incoming-email-to-an-external-destination/
+<!-- markdownlint-disable -->
+## Requirements
+
+| Name | Version |
+|------|---------|
+| terraform | >= 0.13 |
+| archive | >= 1.2 |
+| aws | >= 2.0 |
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| archive | >= 1.2 |
+| aws | >= 2.0 |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|:----:|:-----:|:-----:|
-| attributes | Additional attributes (e.g. `1`) | list(string) | `<list>` | no |
-| delimiter | Delimiter to be used between `namespace`, `stage`, `name` and `attributes` | string | `-` | no |
-| log_retention | Specifies the number of days you want to retain log events in the specified log group | number | `7` | no |
-| mail_recipient | Email address used as "To" value to send an email | string | - | yes |
-| mail_s3_bucket | The ID of the bucket where SES saves raw received email messages | string | - | yes |
-| mail_s3_bucket_prefix | Key prefix of the email objects used to store emails by SES (should NOT end with a trailing slash `/`) | string | - | yes |
-| mail_sender | Email address used as "From" value to send an email | string | - | yes |
-| name | Solution name, e.g. 'app' or 'cluster' | string | `app` | no |
-| namespace | Namespace, which could be your organization name, e.g. 'eg' or 'cp' | string | - | yes |
-| reserved_concurrent_executions | The amount of reserved concurrent executions for this lambda function. A value of 0 disables lambda from being triggered and -1 removes any concurrency limitations. Defaults to Unreserved Concurrency Limits -1. See: https://docs.aws.amazon.com/lambda/latest/dg/scaling.html | number | `-1` | no |
-| ses_region | Specifies the AWS region of SES to be used for sending emails. When not specified default aws provider region is used. | string | `` | no |
-| stage | Stage, e.g. 'prod', 'staging', 'dev', or 'test' | string | - | yes |
-| tags | Additional tags (e.g. `map('BusinessUnit','XYZ')` | map(string) | `<map>` | no |
+|------|-------------|------|---------|:--------:|
+| attributes | Additional attributes (e.g. `1`) | `list(string)` | `[]` | no |
+| delimiter | Delimiter to be used between `namespace`, `stage`, `name` and `attributes` | `string` | `"-"` | no |
+| log\_retention | Specifies the number of days you want to retain log events in the specified log group | `number` | `7` | no |
+| mail\_recipient | Email address used as "To" value to send an email | `string` | n/a | yes |
+| mail\_s3\_bucket | The ID of the bucket where SES saves raw received email messages | `string` | n/a | yes |
+| mail\_s3\_bucket\_prefix | Key prefix of the email objects used to store emails by SES (should NOT end with a trailing slash `/`) | `string` | n/a | yes |
+| mail\_sender | Email address used as "From" value to send an email | `string` | n/a | yes |
+| name | Solution name, e.g. 'app' or 'cluster' | `string` | `"app"` | no |
+| namespace | Namespace, which could be your organization name, e.g. 'eg' or 'cp' | `string` | n/a | yes |
+| reserved\_concurrent\_executions | The amount of reserved concurrent executions for this lambda function. A value of 0 disables lambda from being triggered and -1 removes any concurrency limitations. Defaults to Unreserved Concurrency Limits -1. See: https://docs.aws.amazon.com/lambda/latest/dg/scaling.html | `number` | `-1` | no |
+| ses\_region | Specifies the AWS region of SES to be used for sending emails. When not specified default aws provider region is used. | `string` | `""` | no |
+| stage | Stage, e.g. 'prod', 'staging', 'dev', or 'test' | `string` | n/a | yes |
+| tags | Additional tags (e.g. `map('BusinessUnit','XYZ')` | `map(string)` | `{}` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| lambda_arn | The ARN of created AWS Lambda function |
+| lambda\_arn | The ARN of created AWS Lambda function |
 
+<!-- markdownlint-restore -->
+<!-- markdownlint-disable -->
 ## Makefile Targets
-```
+```text
 Available targets:
 
   help                                Help screen
@@ -68,13 +84,14 @@ Available targets:
   lint                                Lint Terraform code
 
 ```
+<!-- markdownlint-restore -->
 
 
 ## Developing
 
 1. Make changes in terraform files
 
-2. Regerate documentation
+2. Regenerate documentation
 
     ```bash
     bash <(curl -s https://terraform.s3.k.miquido.net/update.sh)
@@ -104,5 +121,7 @@ Copyright © 2017-2020 [Miquido](https://miquido.com)
 
   [logo]: https://www.miquido.com/img/logos/logo__miquido.svg
   [website]: https://www.miquido.com/
+  [gitlab]: https://gitlab.com/miquido
   [github]: https://github.com/miquido
   [bitbucket]: https://bitbucket.org/miquido
+
