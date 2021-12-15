@@ -3,7 +3,7 @@ updates:
 
   # Maintain dependencies for terraform
   - package-ecosystem: "terraform"
-    directory: "/project-infrastructure/root"
+    directory: "/"
     assignees:
       - "marek.moscichowski1"
       - "krzysztof.kluska"
@@ -11,3 +11,4 @@ updates:
       - "tomasz.sojka"
     schedule:
       interval: "daily"
+    auto-merge: true

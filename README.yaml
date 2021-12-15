@@ -1,5 +1,6 @@
-name: miquido-terraform-ses-email-forwarder-lambda
-bitbucket_repo: miquido/terraform-ses-email-forwarder-lambda
+name: terraform-ses-email-forwarder-lambda
+repos:
+  gitlab: miquido/terraform/terraform-ses-email-forwarder-lambda
 badges: []
 related: []
 description: |-
@@ -10,7 +11,7 @@ usage: |-
 
   ```hcl
   module "ses-email-forwarder-lambda" {
-    source = "git::ssh://git@bitbucket.org/miquido/terraform-ses-email-forwarder-lambda.git?ref=master"
+    source = "git::ssh://git@gitlab.com:miquido/terraform/terraform-ses-email-forwarder-lambda.git?ref=master"
 
     name                           = "main"
     namespace                      = "project"
