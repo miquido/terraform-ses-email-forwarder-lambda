@@ -37,7 +37,6 @@ resource "aws_ses_receipt_rule" "example" {
 
 resource "aws_s3_bucket" "example" {
   bucket = "example"
-  acl    = "private"
 }
 
 data "aws_iam_policy_document" "example" {
