@@ -90,7 +90,7 @@ resource "aws_lambda_function" "default" {
   filename                       = local.lambda_zip_filename
   function_name                  = local.function_name
   description                    = local.function_name
-  runtime                        = "python3.7"
+  runtime                        = "python3.9"
   role                           = aws_iam_role.default.arn
   handler                        = "function.lambda_handler"
   source_code_hash               = data.archive_file.lambda.output_base64sha256
